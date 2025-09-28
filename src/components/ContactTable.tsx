@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
-import { motion } from "framer-motion"
+import { motion,type Variants } from "framer-motion"
 import type {contactsType} from "@/types";
 
 export default function ContactTable() {
@@ -20,10 +20,13 @@ export default function ContactTable() {
         },
     }
 
-    const rowVariants = {
-        hidden: { opacity: 0,},
-        show: { opacity: 1, transition: { duration: 0.7, ease: "easeInOut" } },
-    }
+    const rowVariants: Variants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { duration: 0.5, ease: "easeInOut" }
+        }
+    };
 
     return (
         <div className="overflow-x-auto mt-6">

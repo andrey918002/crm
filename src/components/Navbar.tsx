@@ -3,7 +3,10 @@ import { Link } from "@tanstack/react-router"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, Home, Info, History, Star, Settings } from "lucide-react"
 import SidebarProfile from "@/components/sideBarProfile.tsx"
-
+type childrenType = React.ReactNode
+interface NavbarProps {
+    children?: childrenType
+}
 const menuItems = [
     { to: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
     { to: "/about", label: "About", icon: <Info className="h-5 w-5" /> },
@@ -13,7 +16,7 @@ const menuItems = [
     { to: "/settings", label: "Settings", icon: <Settings className="h-5 w-5" /> },
 ]
 
-export default function Navbar({ children }: { children: React.ReactNode }) {
+export default function Navbar({ children }: NavbarProps) {
     const [sidebarOpen, setSidebarOpen] = useState(true)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
