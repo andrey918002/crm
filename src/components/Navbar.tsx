@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, Home, Info, History, Star, Settings } from "lucide-react"
-import SidebarProfile from "@/components/sideBarProfile.tsx"
+import { Menu, Home, Info, Phone, History, Star, Settings } from "lucide-react"
 type childrenType = React.ReactNode
 interface NavbarProps {
     children?: childrenType
@@ -10,10 +9,10 @@ interface NavbarProps {
 const menuItems = [
     { to: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
     { to: "/about", label: "About", icon: <Info className="h-5 w-5" /> },
-    { to: "/contact", label: "Contact", icon: <Info className="h-5 w-5" /> },
+    { to: "/contact", label: "Contact", icon: <Phone className="h-5 w-5" /> },
     { to: "/history", label: "History", icon: <History className="h-5 w-5" /> },
     { to: "/favorites", label: "Favorites", icon: <Star className="h-5 w-5" /> },
-    { to: "/settings", label: "Settings", icon: <Settings className="h-5 w-5" /> },
+    { to: "/setting", label: "Settings", icon: <Settings className="h-5 w-5" /> },
 ]
 
 export default function Navbar({ children }: NavbarProps) {
@@ -110,7 +109,25 @@ export default function Navbar({ children }: NavbarProps) {
                     </ul>
                 </nav>
 
-                <SidebarProfile sidebarOpen={sidebarOpen} />
+                <Link to='/setting' className="relative flex items-center gap-3 w-full text-left p-2 rounded-lg overflow-hidden transition cursor-pointer">
+                    {/* Liquid hover эффект */}
+                    <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 hover:opacity-20 blur-xl transition-all duration-300"></span>
+
+                    {/* Аватар */}
+                    <img
+                        src="https://github.com/shadcn.png"
+                        alt="user"
+                        className="w-8 h-8 rounded-full relative z-10"
+                    />
+
+                    {/* Информация о пользователе */}
+                    {sidebarOpen && (
+                        <div className="relative z-10">
+                            <p className="text-sm font-medium text-gray-900">shadcn</p>
+                            <p className="text-xs text-gray-500">m@example.com</p>
+                        </div>
+                    )}
+                </Link>
             </motion.aside>
 
             {/* ---------- Mobile Top Navbar ---------- */}

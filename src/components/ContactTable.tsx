@@ -1,69 +1,79 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
-import { motion,type Variants } from "framer-motion"
-import type {contactsType} from "@/types";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { motion, type Variants } from "framer-motion";
+import type { contactsType } from "@/types";
 
 export default function ContactTable() {
-    const [contacts, setContacts] = useState<contactsType[]>([])
+    const [contacts, setContacts] = useState<contactsType[]>([]);
+
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/contacts/')
-            .then(res => setContacts(res.data))
-            .catch(err => console.error(err))
-    })
+        axios
+            .get("http://127.0.0.1:8000/api/contacts/")
+            .then((res) => setContacts(res.data))
+            .catch((err) => console.error(err));
+    }, []);
 
     const containerVariants = {
         hidden: {},
-        show: {
-            transition: {
-                staggerChildren: 0.3,
-            },
-        },
-    }
+        show: { transition: { staggerChildren: 0.1 } },
+    };
 
     const rowVariants: Variants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { duration: 0.5, ease: "easeInOut" }
-        }
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+        hover: { scale: 1.02, boxShadow: "0 6px 15px rgba(0,0,0,0.1)" },
     };
 
     return (
-        <div className="overflow-x-auto mt-6">
-            <table className="w-full border border-gray-200 shadow-md rounded-lg overflow-hidden">
-                <thead className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-                <tr>
-                    <th className="px-4 py-2 text-left">ID</th>
-                    <th className="px-4 py-2 text-left">Name</th>
-                    <th className="px-4 py-2 text-left">Last name</th>
-                    <th className="px-4 py-2 text-left">Email</th>
-                    <th className="px-4 py-2 text-left">Phone</th>
-                    <th className="px-4 py-2 text-left">Company</th>
-                </tr>
-                </thead>
-
-                <motion.tbody
-                    className="divide-y divide-gray-200"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="show"
+        <motion.div
+            className="mt-6 px-4 md:px-6 lg:px-8 grid gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+        >
+            {contacts.map((contact) => (
+                <motion.div
+                    key={contact.id}
+                    className="relative rounded-xl p-5 cursor-pointer overflow-hidden"
+                    variants={rowVariants}
+                    whileHover="hover"
                 >
-                    {contacts.map((contact) => (
-                        <motion.tr
-                            key={contact.id}
-                            className="hover:bg-gray-50 transition"
-                            variants={rowVariants}
-                        >
-                            <td className="px-4 py-2">{contact.id}</td>
-                            <td className="px-4 py-2 font-medium">{contact.first_name}</td>
-                            <td className="px-4 py-2 text-blue-600">{contact.last_name}</td>
-                            <td className="px-4 py-2 text-blue-600">{contact.email}</td>
-                            <td className="px-4 py-2">{contact.phone}</td>
-                            <td className="px-4 py-2">{contact.company}</td>
-                        </motion.tr>
-                    ))}
-                </motion.tbody>
-            </table>
-        </div>
-    )
+                    {/* Более мягкий прозрачный градиент */}
+                    <span className="absolute inset-0 bg-gradient-to-r from-blue-300/20 to-purple-300/20 blur-xl transition-all duration-500"></span>
+
+                    <motion.div
+                        className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                        <div>
+                            <span className="font-semibold text-gray-700">Name:</span>{" "}
+                            <span className="text-gray-900">{contact.first_name}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-700">Last Name:</span>{" "}
+                            <span className="text-gray-900">{contact.last_name}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-700">Email:</span>{" "}
+                            <span className="text-gray-800">{contact.email}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-700">Phone:</span>{" "}
+                            <span className="text-gray-900">{contact.phone}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-700">Company:</span>{" "}
+                            <span className="text-gray-900">{contact.company}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-700">Created:</span>{" "}
+                            <span className="text-gray-900">{contact.created_at}</span>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            ))}
+        </motion.div>
+    );
 }
