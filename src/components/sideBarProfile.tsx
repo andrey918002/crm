@@ -58,3 +58,4 @@ export default function SidebarProfile({ sidebarOpen }: { sidebarOpen: boolean }
         </div>
     )
 }
+
