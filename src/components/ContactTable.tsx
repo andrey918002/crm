@@ -32,8 +32,10 @@ export default function ContactTable() {
                 <tr>
                     <th className="px-4 py-2 text-left">ID</th>
                     <th className="px-4 py-2 text-left">Name</th>
+                    <th className="px-4 py-2 text-left">Last name</th>
                     <th className="px-4 py-2 text-left">Email</th>
                     <th className="px-4 py-2 text-left">Phone</th>
+                    <th className="px-4 py-2 text-left">Company</th>
                 </tr>
                 </thead>
 
@@ -55,8 +57,6 @@ export default function ContactTable() {
                             <td className="px-4 py-2 text-blue-600">{contact.email}</td>
                             <td className="px-4 py-2">{contact.phone}</td>
                             <td className="px-4 py-2">{contact.company}</td>
-                            <td className="px-4 py-2">{contact.created_at}</td>
-                            <td className="px-4 py-2">{contact.updated_at}</td>
                         </motion.tr>
                     ))}
                 </motion.tbody>
