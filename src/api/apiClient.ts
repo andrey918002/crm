@@ -1,4 +1,6 @@
-const token = "0226c6abd6234d177bc91f2b08574302bdbacfea";
+const tokenAPI = import.meta.env.VITE_API_TOKEN;
+const token = tokenAPI;
+
 
 export const apiClient = async (
     url: string,
