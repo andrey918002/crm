@@ -34,7 +34,6 @@ export default function Navbar({ children }: NavbarProps) {
                 }}
             >
                 <div className="p-4 flex items-center justify-between border-b border-gray-200/40 relative">
-                    <AnimatePresence>
                         {sidebarOpen && (
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
@@ -52,7 +51,7 @@ export default function Navbar({ children }: NavbarProps) {
                                 </div>
                             </motion.div>
                         )}
-                    </AnimatePresence>
+
 
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}

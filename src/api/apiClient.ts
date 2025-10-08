@@ -21,7 +21,6 @@ export const apiClient = async (
         throw new Error(`HTTP ${res.status}: ${errorText}`);
     }
 
-    // Якщо статус 204 або body порожній, повертаємо null
     if (res.status === 204 || res.headers.get("Content-Length") === "0") {
         return null;
     }

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Phone, Building2, Calendar, Search, Plus, X, Edit2, Trash2 } from "lucide-react";
 import { apiClient } from "@/api/apiClient";
-
+import {Pagination} from "@/components/Pagination.tsx";
 interface Contact {
     id: number;
     first_name: string;
@@ -117,7 +117,7 @@ export default function ContactManager() {
         new Date(dateString).toLocaleDateString("uk-UA", { day: "numeric", month: "short", year: "numeric" });
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <div className="min-h-screen bg-gradient-to-br ">
             {/* Header */}
             <div className="bg-white/70 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -188,13 +188,10 @@ export default function ContactManager() {
                         </p>
                     </motion.div>
                 ) : (
-                    <motion.div
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ staggerChildren: 0.1 }}
-                    >
-                        {sortedContacts.map((contact, index) => (
+                    <Pagination
+                        items={sortedContacts}
+                        itemsPerPage={6}
+                        renderItem={(contact, index) => (
                             <motion.div
                                 key={contact.id}
                                 initial={{ opacity: 0, y: 20 }}
@@ -202,7 +199,7 @@ export default function ContactManager() {
                                 transition={{ delay: index * 0.05 }}
                                 className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:-translate-y-1"
                             >
-                                {/* Avatar and Actions */}
+                                {/* Аватар та дії */}
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="flex items-center gap-3 flex-1 min-w-0">
                                         <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0">
@@ -228,7 +225,9 @@ export default function ContactManager() {
                                             <Edit2 size={16} />
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(contact.id, `${contact.first_name} ${contact.last_name}`)}
+                                            onClick={() =>
+                                                handleDelete(contact.id, `${contact.first_name} ${contact.last_name}`)
+                                            }
                                             className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
                                             title="Видалити"
                                         >
@@ -237,17 +236,23 @@ export default function ContactManager() {
                                     </div>
                                 </div>
 
-                                {/* Contact Info */}
+                                {/* Інформація про контакт */}
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3 text-gray-700">
                                         <Mail size={16} className="text-gray-400 flex-shrink-0" />
-                                        <a href={`mailto:${contact.email}`} className="text-sm hover:text-blue-600 transition truncate">
+                                        <a
+                                            href={`mailto:${contact.email}`}
+                                            className="text-sm hover:text-blue-600 transition truncate"
+                                        >
                                             {contact.email}
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-3 text-gray-700">
                                         <Phone size={16} className="text-gray-400 flex-shrink-0" />
-                                        <a href={`tel:${contact.phone}`} className="text-sm hover:text-blue-600 transition">
+                                        <a
+                                            href={`tel:${contact.phone}`}
+                                            className="text-sm hover:text-blue-600 transition"
+                                        >
                                             {contact.phone}
                                         </a>
                                     </div>
@@ -257,8 +262,8 @@ export default function ContactManager() {
                                     </div>
                                 </div>
                             </motion.div>
-                        ))}
-                    </motion.div>
+                        )}
+                    />
                 )}
             </div>
 
