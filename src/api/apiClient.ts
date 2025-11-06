@@ -1,7 +1,6 @@
 const tokenAPI = import.meta.env.VITE_API_TOKEN;
 const token = tokenAPI;
 
-
 export const apiClient = async (
     url: string,
     options: RequestInit = {},
