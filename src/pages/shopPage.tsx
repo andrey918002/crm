@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
-import ContactTable from "@/components/ContactTable.tsx";
+import ShopWithCart from "@/components/ShopWithCart.tsx";
 
-export default function ContactPage() {
+export default function ShopPage() {
     return (
         <motion.div
             initial={{opacity: 0}}
@@ -10,7 +10,7 @@ export default function ContactPage() {
             className="w-full mt-[50px] max-[639px]:mt-[80px]"
         >
             <div>
-                <ContactTable/>
+                <ShopWithCart/>
             </div>
         </motion.div>
     )

@@ -1,18 +1,18 @@
 import { useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, Home, Info, Phone, History, Star, Settings } from "lucide-react"
+import { Menu, Home, Info, Phone, Star, Settings, LucideShoppingBag } from "lucide-react"
 type childrenType = React.ReactNode
 interface NavbarProps {
     children?: childrenType
 }
 const menuItems = [
-    { to: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-    { to: "/about", label: "About", icon: <Info className="h-5 w-5" /> },
-    { to: "/contact", label: "Contact", icon: <Phone className="h-5 w-5" /> },
-    { to: "/history", label: "History", icon: <History className="h-5 w-5" /> },
-    { to: "/favorites", label: "Favorites", icon: <Star className="h-5 w-5" /> },
-    { to: "/setting", label: "Settings", icon: <Settings className="h-5 w-5" /> },
+    { to: "/", label: "Головна", icon: <Home className="h-5 w-5" /> },
+    { to: "/about", label: "Про нас", icon: <Info className="h-5 w-5" /> },
+    { to: "/contact", label: "Контакти", icon: <Phone className="h-5 w-5" /> },
+    { to: "/shop", label: "Магазин", icon: <LucideShoppingBag className="h-5 w-5" /> },
+    { to: "/favorites", label: "Улюблені", icon: <Star className="h-5 w-5" /> },
+    { to: "/setting", label: "Налаштування", icon: <Settings className="h-5 w-5" /> },
 ]
 
 export default function Navbar({ children }: NavbarProps) {
