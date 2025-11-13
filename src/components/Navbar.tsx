@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, Home, Info, Phone, Star, Settings, LucideShoppingBag } from "lucide-react"
+import { useAuth } from "./AuthContext";
 type childrenType = React.ReactNode
 interface NavbarProps {
     children?: childrenType
@@ -16,6 +17,7 @@ const menuItems = [
 ]
 
 export default function Navbar({ children }: NavbarProps) {
+    const { user } = useAuth();
     const [sidebarOpen, setSidebarOpen] = useState(true)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -108,22 +110,20 @@ export default function Navbar({ children }: NavbarProps) {
                     </ul>
                 </nav>
 
-                <Link to='/setting' className="relative flex items-center gap-3 w-full text-left p-2 rounded-lg overflow-hidden transition cursor-pointer">
-                    {/* Liquid hover эффект */}
+                <Link
+                    to="/setting"
+                    className="relative flex items-center gap-3 w-full text-left p-2 rounded-lg overflow-hidden transition cursor-pointer"
+                >
                     <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 hover:opacity-20 blur-xl transition-all duration-300"></span>
-
-                    {/* Аватар */}
                     <img
                         src="https://github.com/shadcn.png"
                         alt="user"
                         className="w-8 h-8 rounded-full relative z-10"
                     />
-
-                    {/* Информация о пользователе */}
-                    {sidebarOpen && (
+                    {sidebarOpen && user && (
                         <div className="relative z-10">
-                            <p className="text-sm font-medium text-gray-900">shadcn</p>
-                            <p className="text-xs text-gray-500">m@example.com</p>
+                            <p className="text-sm font-medium text-gray-900">{user.username}</p>
+                            <p className="text-xs text-gray-500">{user.email}</p>
                         </div>
                     )}
                 </Link>
