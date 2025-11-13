@@ -41,7 +41,6 @@ export default function HomePage() {
         setSuccess(null);
 
         try {
-            // УВАГА: Ви використовуєте локальний API. Переконайтеся, що він запущений.
             const url =
                 mode === "register"
                     ? "http://127.0.0.1:8000/api/auth/register/"
