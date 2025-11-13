@@ -1,12 +1,14 @@
-import { useAuth } from "../components/AuthContext";
+import { useAuth } from "../components/AuthContext.tsx";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LogOut } from "lucide-react"; // <-- 1. Імпортуємо іконку
 
 export default function HomePage() {
-    const { user, login } = useAuth();
+    // 2. Додаємо logout до деструктуризації
+    const { user, login, logout } = useAuth();
     const [mode, setMode] = useState<"register" | "login">("register");
     const [formData, setFormData] = useState({
         username: "",
@@ -39,12 +41,14 @@ export default function HomePage() {
 
         setLoading(true);
         setSuccess(null);
+        setErrors({}); // Скидаємо попередні помилки
 
         try {
+            // Змінено 127.0.0.1 на localhost для кращої сумісності з локальною мережею
             const url =
                 mode === "register"
-                    ? "http://127.0.0.1:8000/api/auth/register/"
-                    : "http://127.0.0.1:8000/api/auth/login/";
+                    ? "http://localhost:8000/api/auth/register/"
+                    : "http://localhost:8000/api/auth/login/";
 
             const body =
                 mode === "register"
@@ -66,17 +70,51 @@ export default function HomePage() {
                 body: JSON.stringify(body),
             });
 
-            const data = await res.json();
+            // 1. Отримання сирого тексту відповіді
+            const responseText = await res.text();
+            let data: any = {};
 
-            if (!res.ok) throw new Error(data.detail || "Помилка авторизації");
+            // 2. Спроба розібрати відповідь як JSON
+            try {
+                // Перевіряємо, чи є відповідь порожньою, перш ніж парсити
+                if (responseText) {
+                    data = JSON.parse(responseText);
+                } else {
+                    // Це може бути, якщо сервер повернув 204 No Content або 200 без тіла
+                    data = {};
+                }
+            } catch (jsonError) {
+                // Якщо парсинг JSON не вдався (наприклад, це HTML),
+                // і статус не є успішним, генеруємо помилку
+                if (!res.ok) {
+                    console.error("Помилка парсингу JSON. Сервер повернув:", responseText);
+                    // Використовуємо загальне повідомлення + статус
+                    throw new Error(`Помилка: ${res.status} ${res.statusText}. Сервер повернув недійсний формат.`);
+                }
+                // Якщо статус успішний, але немає JSON, продовжуємо (наприклад, 204 No Content)
+            }
 
+
+            // 3. Перевірка статусу відповіді
+            if (!res.ok) {
+                // Якщо є JSON з деталями помилки, використовуємо його
+                // Часто Django REST Framework повертає помилки в полі 'detail' або 'non_field_errors'
+                const errorMessage = data.detail || data.non_field_errors?.[0] || data.username?.[0] || data.email?.[0] || "Помилка авторизації";
+                throw new Error(errorMessage);
+            }
+
+            // 4. Успішне виконання
             if (mode === "register") {
-                setSuccess("Реєстрація успішна! Тепер увійдіть у свій акаунт.");
+                setSuccess("Реєстрація успішна! Тепер увійдйть у свій акаунт.");
+                // Очищаємо поля паролів після успішної реєстрації
+                setFormData(prev => ({ ...prev, password: "", confirmPassword: "" }));
                 setMode("login");
             } else {
+                // Припускаємо, що data містить data.user та data.token
                 login(data.user, data.token);
             }
         } catch (err: any) {
+            // Відображення загальної помилки
             setErrors({ general: err.message || "Невідома помилка" });
         } finally {
             setLoading(false);
@@ -228,8 +266,27 @@ export default function HomePage() {
         );
     }
 
+    // --- Розділ для авторизованого користувача (user існує) ---
+
     return (
         <div className="p-10 flex flex-col items-center">
+            {/* Кнопка "Вийти" */}
+            <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="w-full max-w-3xl flex justify-end mb-4"
+            >
+                <Button
+                    onClick={logout} // <-- Викликаємо функцію logout
+                    variant="outline"
+                    className="flex items-center space-x-2 text-red-600 border-red-300 hover:bg-red-50 hover:text-red-700 transition duration-300 shadow-md hover:shadow-lg"
+                >
+                    <LogOut className="w-5 h-5" />
+                    <span>Вийти</span>
+                </Button>
+            </motion.div>
+
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
