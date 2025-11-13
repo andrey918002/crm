@@ -85,14 +85,20 @@ export default function HomePage() {
 
     if (!user) {
         return (
-            // Абсолютний повноекранний оверлей з новим яскравим фоном
-            <div className="fixed inset-0 bg-gradient-to-br from-gray-900 to-indigo-900 z-50 flex items-center justify-center p-4 overflow-hidden">
-                {/* Анімований фон-світіння */}
+            // Абсолютний повноекранний оверлей - Світлий, чистий фон
+            <div className="fixed inset-0 bg-gray-50 dark:bg-gray-900 z-50 flex items-center justify-center p-4 overflow-hidden">
+                {/* Анімований фон-світіння (м'які кольори) */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 0.3, scale: 1.5 }}
                     transition={{ duration: 8, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-                    className="absolute inset-0 bg-blue-500 rounded-full blur-3xl opacity-20 transform -translate-x-1/2 -translate-y-1/2"
+                    className="absolute inset-0 bg-teal-200 dark:bg-teal-500 rounded-full blur-3xl opacity-20 transform translate-x-1/4 translate-y-1/4"
+                />
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 0.2, scale: 1.5 }}
+                    transition={{ duration: 10, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 1 }}
+                    className="absolute inset-0 bg-sky-300 dark:bg-sky-500 rounded-full blur-3xl opacity-20 transform -translate-x-1/4 -translate-y-1/4"
                 />
 
                 <motion.div
@@ -100,16 +106,17 @@ export default function HomePage() {
                     key={mode}
                     initial={{ opacity: 0, y: -50, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ type: "spring", stiffness: 120, damping: 15 }}
-                    className="w-full max-w-md relative z-10"
+                    transition={{ type: "spring", stiffness: 100, damping: 14 }}
+                    className="w-full max-w-sm relative z-10"
                 >
-                    <Card className="shadow-2xl border-2 border-indigo-400/50 bg-white/95 backdrop-blur-sm transition-all duration-300 hover:shadow-indigo-500/50">
-                        <CardHeader>
-                            <CardTitle className="text-center text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-600">
-                                {mode === "register" ? "🚀 Реєстрація" : "🔑 Вхід до акаунту"}
+                    {/* Glassmorphism Card (Матове скло) */}
+                    <Card className="shadow-2xl bg-white/50 backdrop-blur-xl border border-gray-100/30 transition-all duration-500 hover:shadow-sky-300/60 dark:bg-gray-800/50 dark:border-gray-700/50 dark:hover:shadow-teal-600/50">
+                        <CardHeader className="pt-8 pb-4">
+                            <CardTitle className="text-center text-3xl font-bold text-gray-800 dark:text-gray-100">
+                                {mode === "register" ? " Створити акаунт" : " Ласкаво просимо"}
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="px-6 pb-6">
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
                                     <Input
@@ -117,7 +124,7 @@ export default function HomePage() {
                                         placeholder="Ім'я користувача"
                                         value={formData.username}
                                         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                                        className="border-indigo-300 focus:ring-indigo-500"
+                                        className="border-gray-200 focus:border-sky-500 bg-white/70 dark:bg-gray-700/70 dark:border-gray-600 dark:text-gray-100"
                                     />
                                     {errors.username && (
                                         <p className="text-red-500 text-sm mt-1">{errors.username}</p>
@@ -131,7 +138,7 @@ export default function HomePage() {
                                             placeholder="Email"
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                            className="border-indigo-300 focus:ring-indigo-500"
+                                            className="border-gray-200 focus:border-sky-500 bg-white/70 dark:bg-gray-700/70 dark:border-gray-600 dark:text-gray-100"
                                         />
                                         {errors.email && (
                                             <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -145,7 +152,7 @@ export default function HomePage() {
                                         placeholder="Пароль"
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="border-indigo-300 focus:ring-indigo-500"
+                                        className="border-gray-200 focus:border-sky-500 bg-white/70 dark:bg-gray-700/70 dark:border-gray-600 dark:text-gray-100"
                                     />
                                     {errors.password && (
                                         <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -161,7 +168,7 @@ export default function HomePage() {
                                             onChange={(e) =>
                                                 setFormData({ ...formData, confirmPassword: e.target.value })
                                             }
-                                            className="border-indigo-300 focus:ring-indigo-500"
+                                            className="border-gray-200 focus:border-sky-500 bg-white/70 dark:bg-gray-700/70 dark:border-gray-600 dark:text-gray-100"
                                         />
                                         {errors.confirmPassword && (
                                             <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
@@ -173,29 +180,29 @@ export default function HomePage() {
                                     <p className="text-red-500 text-sm text-center">{errors.general}</p>
                                 )}
                                 {success && (
-                                    <p className="text-green-600 text-sm text-center">{success}</p>
+                                    <p className="text-green-600 text-sm text-center dark:text-green-400">{success}</p>
                                 )}
 
                                 <Button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full h-10 bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 transition duration-300"
+                                    className="w-full h-10 bg-sky-500 hover:bg-sky-600 text-white transition duration-300 shadow-lg shadow-sky-500/50 dark:shadow-sky-700/50"
                                 >
                                     {loading
-                                        ? "⏳ Зачекайте..."
+                                        ? "⏳ Завантаження..."
                                         : mode === "register"
                                             ? "Зареєструватися"
                                             : "Увійти"}
                                 </Button>
 
-                                <p className="text-center text-sm mt-3 text-gray-600">
+                                <p className="text-center text-sm mt-3 text-gray-600 dark:text-gray-300">
                                     {mode === "register" ? (
                                         <>
                                             Вже маєте акаунт?{" "}
                                             <button
                                                 type="button"
-                                                className="text-indigo-600 hover:underline font-medium"
-                                                onClick={() => setMode("login")}
+                                                className="text-sky-600 hover:text-sky-700 hover:underline font-semibold dark:text-sky-400 dark:hover:text-sky-300"
+                                                onClick={() => { setMode("login"); setSuccess(null); setErrors({}); }}
                                             >
                                                 Увійти
                                             </button>
@@ -205,8 +212,8 @@ export default function HomePage() {
                                             Немає акаунту?{" "}
                                             <button
                                                 type="button"
-                                                className="text-indigo-600 hover:underline font-medium"
-                                                onClick={() => setMode("register")}
+                                                className="text-sky-600 hover:text-sky-700 hover:underline font-semibold dark:text-sky-400 dark:hover:text-sky-300"
+                                                onClick={() => { setMode("register"); setSuccess(null); setErrors({}); }}
                                             >
                                                 Зареєструватися
                                             </button>
@@ -221,7 +228,6 @@ export default function HomePage() {
         );
     }
 
-    // Основний контент сайту, що відображається після успішного входу
     return (
         <div className="p-10 flex flex-col items-center">
             <motion.div
