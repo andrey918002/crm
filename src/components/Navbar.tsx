@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, Home, Info, Phone, Star, Settings, LucideShoppingBag } from "lucide-react"
+import { Menu, Home, Info, Phone, Settings, LucideShoppingBag } from "lucide-react"
 import { useAuth } from "./AuthContext";
 type childrenType = React.ReactNode
 interface NavbarProps {
@@ -12,7 +12,6 @@ const menuItems = [
     { to: "/about", label: "Про нас", icon: <Info className="h-5 w-5" /> },
     { to: "/contact", label: "Контакти", icon: <Phone className="h-5 w-5" /> },
     { to: "/shop", label: "Магазин", icon: <LucideShoppingBag className="h-5 w-5" /> },
-    { to: "/favorites", label: "Улюблені", icon: <Star className="h-5 w-5" /> },
     { to: "/setting", label: "Налаштування", icon: <Settings className="h-5 w-5" /> },
 ]
 
