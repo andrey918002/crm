@@ -25,6 +25,9 @@ interface CartItem {
     quantity: number;
 }
 
+// 🌐 Базовий URL для API
+const BASE_URL = "http://127.0.0.1:8000/api";
+
 export default function ShopWithCart() {
     const [products, setProducts] = useState<Product[]>([]);
     const [cart, setCart] = useState<CartItem[]>([]);
@@ -42,7 +45,8 @@ export default function ShopWithCart() {
 
     const fetchProducts = async () => {
         try {
-            const data = await apiClient("/api/products/");
+            // GET http://127.0.0.1:8000/api/products/
+            const data = await apiClient(`${BASE_URL}/products/`);
             setProducts(data);
         } catch (error) {
             console.error("Помилка завантаження товарів:", error);
@@ -51,7 +55,8 @@ export default function ShopWithCart() {
 
     const fetchCart = async () => {
         try {
-            const data = await apiClient("/api/cart/");
+            // GET http://127.0.0.1:8000/api/cart/
+            const data = await apiClient(`${BASE_URL}/cart/`);
             setCart(data);
         } catch (error) {
             console.error("Помилка завантаження кошика:", error);
@@ -62,9 +67,10 @@ export default function ShopWithCart() {
     const addToCart = async (product: Product) => {
         try {
             setAddingMap((prev) => ({ ...prev, [product.id]: 1 }));
-            await apiClient("/api/cart/", {
+            // POST http://127.0.0.1:8000/api/cart/ (Додавання нового товару/позиції)
+            await apiClient(`${BASE_URL}/cart/`, {
                 method: "POST",
-                body: JSON.stringify({ product_id: product.id, quantity: 1 }),
+                body: JSON.stringify({ product: product.id, quantity: 1 }), // Використовуємо 'product' як в прикладі API
             });
             fetchCart();
         } catch (error) {
@@ -80,7 +86,8 @@ export default function ShopWithCart() {
 
     const removeFromCart = async (item: CartItem) => {
         try {
-            await apiClient(`/api/cart/${item.id}/`, { method: "DELETE" });
+            // DELETE http://127.0.0.1:8000/api/cart/<id>/ (Видалення елемента кошика)
+            await apiClient(`${BASE_URL}/cart/${item.id}/`, { method: "DELETE" });
             fetchCart();
         } catch (error) {
             console.error("Помилка видалення:", error);
@@ -90,11 +97,16 @@ export default function ShopWithCart() {
     const changeCartQuantity = async (item: CartItem, delta: number) => {
         const newQuantity = item.quantity + delta;
         if (newQuantity < 1) return removeFromCart(item);
+
         try {
-            await apiClient(`/api/cart/`, {
+            // 🛑 ВИПРАВЛЕНО: Використовуємо POST http://127.0.0.1:8000/api/cart/
+            // Припускаємо, що API обробляє повторний POST як оновлення
+            // (хоча PATCH /api/cart/<id>/ був би RESTful-коректнішим)
+            // Повертаємося до POST, як було в оригінальній логіці, але з коректним ключем:
+            await apiClient(`${BASE_URL}/cart/`, {
                 method: "POST",
                 body: JSON.stringify({
-                    product_id: item.product.id,
+                    product: item.product.id, // Використовуємо 'product' як в прикладі API
                     quantity: newQuantity,
                 }),
             });
@@ -103,6 +115,8 @@ export default function ShopWithCart() {
             console.error("Помилка оновлення кількості:", error);
         }
     };
+
+    // --- (Решта коду без змін) ---
 
     // ===================== CHECKOUT =====================
     const cartTotal = cart.reduce(
