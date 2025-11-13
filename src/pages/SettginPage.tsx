@@ -78,26 +78,7 @@ export default function SettingPage() {
             </div>
 
             {/* Основний контент - Ширший контейнер */}
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                {/* Меню (імітація, можна розширити) */}
-                <motion.div
-                    className="space-y-2 lg:col-span-1"
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.1 }}
-                >
-                    <a href="#" className="flex items-center p-3 rounded-lg bg-blue-50 text-blue-700 font-semibold hover:bg-blue-100 transition">
-                        <User size={20} className="mr-3" /> Профіль
-                    </a>
-                    <a href="#" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                        <Lock size={20} className="mr-3" /> Безпека
-                    </a>
-                    <a href="#" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                        <Bell size={20} className="mr-3" /> Сповіщення
-                    </a>
-                </motion.div>
-
+            <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Форми Налаштувань */}
                 <div className="space-y-8 lg:col-span-2">
 

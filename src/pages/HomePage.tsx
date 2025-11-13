@@ -128,7 +128,7 @@ export default function HomePage() {
             <div className="min-h-screen bg-gray-50 p-6 sm:p-10 flex items-center justify-center">
 
                 {/* Контейнер для форми, центрований на сторінці */}
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div className="max-w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
 
                     {/* Ліва частина: Привітання та опис */}
                     <motion.div

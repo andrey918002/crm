@@ -66,7 +66,7 @@ export default function AboutPage() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
                 {/* Місія та Статистика */}
                 <motion.div
